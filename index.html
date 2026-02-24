@@ -15,7 +15,10 @@
             --secondary-bg: #e3f9e5; /* Soft green background (for subtle contrast) */
             --card-surface-bg: rgba(255, 255, 255, 0.985); /* Brighter white with a very subtle tint */
             --unit-surface-bg: rgba(255, 255, 255, 0.65); /* Lighter inner countdown tiles */
-            --section-gap: 1rem;
+            --section-gap: clamp(0.5rem, 1.15vh, 1rem);
+            --viewport-height: 100vh;
+            --screen-safe-x: clamp(0.25rem, 0.6vw, 0.8rem);
+            --screen-safe-y: clamp(0.25rem, 0.6vh, 0.8rem);
         }
 
         * {
@@ -35,12 +38,18 @@
 
         body {
             background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 50%, var(--primary-bg) 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
+            min-height: 100vh;
+            min-height: 100svh;
+            min-height: 100dvh;
+            height: var(--viewport-height, 100dvh);
+            display: grid;
+            grid-template-rows: auto auto minmax(0, 1fr) auto;
+            justify-content: stretch;
+            align-content: stretch;
             cursor: none;
             user-select: none;
             transition: filter 0.5s ease;
+            padding: var(--screen-safe-y) var(--screen-safe-x);
         }
 
         body.night-mode {
@@ -166,6 +175,8 @@
             align-items: center;
             justify-content: center;
             padding: var(--section-gap) 2rem 2rem;
+            min-height: 0;
+            overflow: hidden;
         }
 
         .countdown-grid {
@@ -175,6 +186,8 @@
             width: 100%;
             max-width: 1800px;
             margin: 0 auto;
+            min-height: 0;
+            align-content: center;
         }
 
         .countdown-grid.grid-1 {
@@ -264,6 +277,7 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+            min-height: 0;
             box-shadow: 0 0 40px rgba(46, 204, 113, 0.5),
                        inset 0 0 20px rgba(46, 204, 113, 0.1);
             transition: all 0.3s ease;
@@ -955,6 +969,227 @@
             }
         }
 
+        /* Height-first tuning for TVs and short landscape displays */
+        @media (max-height: 1200px) and (min-width: 900px) {
+            :root {
+                --section-gap: clamp(0.45rem, 0.9vh, 0.8rem);
+                --screen-safe-y: clamp(0.2rem, 0.45vh, 0.5rem);
+            }
+
+            .header {
+                gap: 1.4rem;
+                padding: 0.85rem 1.5rem;
+            }
+
+            .logo {
+                width: 90px;
+                height: 90px;
+            }
+
+            .school-name {
+                font-size: clamp(2.2rem, 4.3vh, 3.8rem);
+                letter-spacing: 0.12em;
+            }
+
+            .clock-panel {
+                padding: 0.9rem 1.3rem;
+                gap: 0.8rem 1.4rem;
+                font-size: 1rem;
+            }
+
+            .clock-segment {
+                min-width: 170px;
+            }
+
+            .clock-segment.primary {
+                min-width: 220px;
+            }
+
+            .clock-divider {
+                min-height: 64px;
+            }
+
+            .clock-time {
+                font-size: clamp(2rem, 3.6vh, 2.8rem);
+            }
+
+            .clock-date {
+                font-size: clamp(0.9rem, 1.4vh, 1.1rem);
+            }
+
+            .main-content {
+                padding: var(--section-gap) 1.35rem 1rem;
+            }
+
+            .countdown-grid {
+                gap: 1.2rem;
+            }
+
+            .countdown-card {
+                padding: 1.6rem 1.1rem;
+                border-radius: 1.5rem;
+            }
+
+            .card-title {
+                font-size: clamp(1.2rem, 2.1vh, 1.75rem);
+                margin-bottom: 0.75rem;
+                min-height: 0;
+                line-height: 1.2;
+            }
+
+            .countdown-display {
+                gap: 0.75rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .countdown-unit {
+                padding: 0.85rem 0.35rem;
+                border-radius: 1rem;
+            }
+
+            .countdown-number {
+                font-size: clamp(2rem, 2.8vh, 2.8rem);
+            }
+
+            .countdown-number[id^="days-"] {
+                font-size: clamp(2.8rem, 4vh, 4.2rem);
+            }
+
+            .countdown-label {
+                font-size: clamp(0.8rem, 1.1vh, 0.95rem);
+                margin-top: 0.25rem;
+            }
+
+            .event-status {
+                font-size: clamp(1.35rem, 2.2vh, 1.9rem);
+                margin-top: 0.45rem;
+            }
+
+            .target-date {
+                font-size: clamp(0.72rem, 0.95vh, 0.85rem);
+                margin-top: 0.45rem;
+            }
+
+            .footer {
+                padding: 0.65rem 1rem;
+            }
+
+            .footer-text {
+                font-size: clamp(1rem, 1.75vh, 1.35rem);
+            }
+        }
+
+        @media (max-height: 900px) and (min-width: 900px) {
+            :root {
+                --section-gap: clamp(0.3rem, 0.65vh, 0.55rem);
+                --screen-safe-y: clamp(0.1rem, 0.25vh, 0.3rem);
+            }
+
+            .header {
+                gap: 0.9rem;
+                padding: 0.55rem 1rem;
+                border-radius: 1rem;
+            }
+
+            .logo {
+                width: 64px;
+                height: 64px;
+            }
+
+            .school-name {
+                font-size: clamp(1.6rem, 3.3vh, 2.6rem);
+                letter-spacing: 0.08em;
+            }
+
+            .clock-panel {
+                padding: 0.55rem 0.9rem;
+                gap: 0.45rem 0.9rem;
+                border-radius: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .clock-segment,
+            .clock-segment.primary {
+                min-width: 140px;
+                flex: 1 1 140px;
+            }
+
+            .clock-divider {
+                display: none;
+            }
+
+            .clock-time {
+                font-size: clamp(1.4rem, 2.8vh, 2rem);
+            }
+
+            .clock-label {
+                font-size: 0.75rem;
+            }
+
+            .clock-date {
+                font-size: clamp(0.72rem, 1vh, 0.9rem);
+            }
+
+            .main-content {
+                padding: var(--section-gap) 0.8rem 0.6rem;
+            }
+
+            .countdown-grid {
+                gap: 0.75rem;
+            }
+
+            .countdown-card {
+                padding: 1rem 0.75rem;
+                border-radius: 1rem;
+            }
+
+            .card-title {
+                font-size: clamp(0.95rem, 1.7vh, 1.35rem);
+                margin-bottom: 0.5rem;
+            }
+
+            .countdown-display {
+                gap: 0.45rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .countdown-unit {
+                padding: 0.55rem 0.2rem;
+                border-radius: 0.75rem;
+            }
+
+            .countdown-number {
+                font-size: clamp(1.35rem, 2vh, 1.95rem);
+            }
+
+            .countdown-number[id^="days-"] {
+                font-size: clamp(1.9rem, 2.9vh, 2.9rem);
+            }
+
+            .countdown-label {
+                font-size: clamp(0.6rem, 0.75vh, 0.8rem);
+                margin-top: 0.15rem;
+            }
+
+            .event-status {
+                font-size: clamp(1rem, 1.6vh, 1.35rem);
+                margin-top: 0.25rem;
+            }
+
+            .target-date {
+                font-size: 0.65rem;
+                margin-top: 0.2rem;
+            }
+
+            .footer {
+                padding: 0.35rem 0.75rem;
+            }
+
+            .footer-text {
+                font-size: clamp(0.8rem, 1.2vh, 1rem);
+            }
+        }
+
         /* Hide scrollbars */
         ::-webkit-scrollbar {
             display: none;
@@ -1492,6 +1727,19 @@
         window.toggleFullscreen = toggleFullscreen;
         console.log('Global functions registered');
 
+        // Keep a real viewport-height CSS variable for TV browsers / fullscreen UI chrome changes
+        function syncViewportHeight() {
+            const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+            document.documentElement.style.setProperty('--viewport-height', `${Math.round(viewportHeight)}px`);
+        }
+
+        window.addEventListener('resize', syncViewportHeight, { passive: true });
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', syncViewportHeight, { passive: true });
+            window.visualViewport.addEventListener('scroll', syncViewportHeight, { passive: true });
+        }
+        syncViewportHeight();
+
         // ========================================================================
         // CONFIGURATION - EDIT THESE VALUES
         // ========================================================================
@@ -2016,6 +2264,8 @@
         // INITIALIZATION ON PAGE LOAD
         // ========================================================================
         document.addEventListener('DOMContentLoaded', async () => {
+            syncViewportHeight();
+
             // Load saved events from localStorage or use defaults
             loadEventsFromStorage();
             
