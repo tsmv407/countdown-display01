@@ -564,6 +564,136 @@
         .event-item-delete:hover {
             background: #c0392b;
         }
+
+        /* ============================================================================
+           EDIT BUTTON STYLES
+           ============================================================================ */
+        .event-item-edit {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.4rem 0.7rem;
+            border-radius: 0.3rem;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            margin-right: 0.4rem;
+        }
+
+        .event-item-edit:hover {
+            background: #2980b9;
+        }
+
+        .event-item-actions {
+            display: flex;
+            gap: 0.3rem;
+        }
+
+        /* ============================================================================
+           DRAG AND DROP STYLES
+           ============================================================================ */
+        .event-item {
+            cursor: grab;
+            transition: all 0.2s ease;
+        }
+
+        .event-item:active {
+            cursor: grabbing;
+        }
+
+        .event-item.dragging {
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+
+        .event-item.drag-over {
+            background: rgba(46, 204, 113, 0.2);
+            border-color: rgba(46, 204, 113, 0.5);
+            border-width: 2px;
+        }
+
+        /* ============================================================================
+           EDIT MODAL STYLES
+           ============================================================================ */
+        .edit-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.98);
+            border: 2px solid var(--secondary-accent);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            z-index: 2000;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+            display: none;
+        }
+
+        .edit-modal.active {
+            display: block;
+        }
+
+        .edit-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+            display: none;
+        }
+
+        .edit-modal-overlay.active {
+            display: block;
+        }
+
+        .edit-modal-title {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--secondary-accent);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .edit-modal-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .edit-modal-buttons button {
+            flex: 1;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .edit-modal-buttons .save-btn {
+            background: var(--secondary-accent);
+            color: white;
+        }
+
+        .edit-modal-buttons .save-btn:hover {
+            background: #20b85d;
+        }
+
+        .edit-modal-buttons .cancel-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .edit-modal-buttons .cancel-btn:hover {
+            background: #c0392b;
+        }
     </style>
 </head>
 <body>
@@ -637,6 +767,26 @@
         
         <div class="event-list" id="eventList">
             <!-- Events will be listed here -->
+        </div>
+    </div>
+
+    <!-- ========================================================================
+         EDIT EVENT MODAL
+         ======================================================================== -->
+    <div class="edit-modal-overlay" id="editModalOverlay" onclick="closeEditModal(); return false;"></div>
+    <div class="edit-modal" id="editModal">
+        <div class="edit-modal-title">✏️ Edit Event</div>
+        <div class="event-input-group">
+            <label>Event Title</label>
+            <input type="text" id="editEventTitle" placeholder="Event name">
+        </div>
+        <div class="event-input-group">
+            <label>Date & Time (YYYY-MM-DD HH:MM)</label>
+            <input type="datetime-local" id="editEventDateTime">
+        </div>
+        <div class="edit-modal-buttons">
+            <button class="save-btn" id="saveEditBtn">Save Changes</button>
+            <button class="cancel-btn" id="cancelEditBtn">Cancel</button>
         </div>
     </div>
 
@@ -1046,6 +1196,8 @@
             countdownConfigs.forEach((event, index) => {
                 const eventItem = document.createElement('div');
                 eventItem.className = 'event-item';
+                eventItem.draggable = true;
+                eventItem.dataset.index = index;
                 
                 const dateObj = new Date(event.targetDate);
                 const dateStr = dateObj.toLocaleDateString('en-US', {
@@ -1060,7 +1212,10 @@
                         <div class="event-item-title">${event.title}</div>
                         <div class="event-item-date">${dateStr}</div>
                     </div>
-                    <button class="event-item-delete" data-index="${index}">Delete</button>
+                    <div class="event-item-actions">
+                        <button class="event-item-edit" data-index="${index}">Edit</button>
+                        <button class="event-item-delete" data-index="${index}">Delete</button>
+                    </div>
                 `;
 
                 eventList.appendChild(eventItem);
@@ -1077,6 +1232,161 @@
                     updateCountdowns();
                 });
             });
+
+            // Add event listeners to edit buttons
+            document.querySelectorAll('.event-item-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const index = parseInt(e.target.dataset.index);
+                    openEditModal(index);
+                });
+            });
+
+            // Add drag-and-drop event listeners
+            document.querySelectorAll('.event-item').forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragover', handleDragOver);
+                item.addEventListener('drop', handleDrop);
+                item.addEventListener('dragend', handleDragEnd);
+                item.addEventListener('dragenter', handleDragEnter);
+                item.addEventListener('dragleave', handleDragLeave);
+            });
+        }
+
+        // ========================================================================
+        // DRAG AND DROP HANDLERS
+        // ========================================================================
+        let draggedItem = null;
+        let draggedFromIndex = null;
+
+        function handleDragStart(e) {
+            draggedItem = this;
+            draggedFromIndex = parseInt(this.dataset.index);
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleDragEnter(e) {
+            if (this !== draggedItem && this.classList.contains('event-item')) {
+                this.classList.add('drag-over');
+            }
+        }
+
+        function handleDragLeave(e) {
+            if (this !== draggedItem) {
+                this.classList.remove('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+            
+            if (draggedItem !== this && this.classList.contains('event-item')) {
+                const draggedToIndex = parseInt(this.dataset.index);
+                
+                // Reorder the array
+                if (draggedFromIndex < draggedToIndex) {
+                    const draggedEvent = countdownConfigs[draggedFromIndex];
+                    countdownConfigs.splice(draggedFromIndex, 1);
+                    countdownConfigs.splice(draggedToIndex - 1, 0, draggedEvent);
+                } else {
+                    const draggedEvent = countdownConfigs[draggedFromIndex];
+                    countdownConfigs.splice(draggedFromIndex, 1);
+                    countdownConfigs.splice(draggedToIndex, 0, draggedEvent);
+                }
+                
+                this.classList.remove('drag-over');
+                saveEventsToStorage();
+                updateEventList();
+                initializeCountdownCards();
+                updateCountdowns();
+            }
+            
+            return false;
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            document.querySelectorAll('.event-item').forEach(item => {
+                item.classList.remove('drag-over');
+            });
+            draggedItem = null;
+            draggedFromIndex = null;
+        }
+
+        // ========================================================================
+        // EDIT EVENT MODAL FUNCTIONS
+        // ========================================================================
+        let editingEventIndex = null;
+
+        function openEditModal(index) {
+            editingEventIndex = index;
+            const event = countdownConfigs[index];
+            
+            // Populate the form with current event data
+            document.getElementById('editEventTitle').value = event.title;
+            
+            // Convert Date object to datetime-local format
+            const dateObj = new Date(event.targetDate);
+            const year = dateObj.getFullYear();
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const day = String(dateObj.getDate()).padStart(2, '0');
+            const hours = String(dateObj.getHours()).padStart(2, '0');
+            const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+            const datetimeLocal = `${year}-${month}-${day}T${hours}:${minutes}`;
+            
+            document.getElementById('editEventDateTime').value = datetimeLocal;
+            
+            // Show modal and overlay
+            document.getElementById('editModal').classList.add('active');
+            document.getElementById('editModalOverlay').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+            document.getElementById('editModalOverlay').classList.remove('active');
+            editingEventIndex = null;
+        }
+
+        function saveEditedEvent() {
+            if (editingEventIndex === null) return;
+            
+            const title = document.getElementById('editEventTitle').value.trim();
+            const dateTimeInput = document.getElementById('editEventDateTime').value;
+            
+            if (!title || !dateTimeInput) {
+                alert('Please fill in both title and date/time');
+                return;
+            }
+            
+            try {
+                const dateObj = new Date(dateTimeInput);
+                
+                countdownConfigs[editingEventIndex] = {
+                    title: title,
+                    targetDate: dateObj,
+                    eventIcon: countdownConfigs[editingEventIndex].eventIcon || '📌'
+                };
+                
+                saveEventsToStorage();
+                updateEventList();
+                initializeCountdownCards();
+                updateCountdowns();
+                closeEditModal();
+                
+                alert('Event updated successfully! ✅');
+            } catch (error) {
+                alert('Error updating event: ' + error.message);
+            }
         }
 
         // Event listeners are now attached in DOMContentLoaded
@@ -1164,6 +1474,17 @@
                     updateEventList();
                     initializeCountdownCards();
                     updateCountdowns();
+                }
+            });
+
+            // Edit Event Modal Listeners
+            document.getElementById('saveEditBtn').addEventListener('click', saveEditedEvent);
+            document.getElementById('cancelEditBtn').addEventListener('click', closeEditModal);
+            
+            // Close modal when pressing Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeEditModal();
                 }
             });
             // ====== END EVENT LISTENERS ======
