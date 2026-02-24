@@ -172,7 +172,7 @@
         .main-content {
             flex: 1;
             display: flex;
-            align-items: center;
+            align-items: stretch;
             justify-content: center;
             padding: var(--section-gap) 2rem 2rem;
             min-height: 0;
@@ -187,7 +187,8 @@
             max-width: 1800px;
             margin: 0 auto;
             min-height: 0;
-            align-content: center;
+            height: 100%;
+            align-content: stretch;
         }
 
         .countdown-grid.grid-1 {
@@ -254,6 +255,8 @@
             grid-template-columns: repeat(3, 1fr);
             max-width: 1800px;
             gap: 2rem;
+            grid-template-rows: minmax(0, 1fr);
+            align-content: stretch;
         }
 
         .countdown-grid.grid-4 {
@@ -283,6 +286,10 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+        }
+
+        .countdown-grid.grid-3 .countdown-card {
+            justify-content: center;
         }
 
         .countdown-card::before {
@@ -972,37 +979,37 @@
         /* Height-first tuning for TVs and short landscape displays */
         @media (max-height: 1200px) and (min-width: 900px) {
             :root {
-                --section-gap: clamp(0.5rem, 0.95vh, 0.85rem);
+                --section-gap: clamp(0.65rem, 1.1vh, 1rem);
                 --screen-safe-y: clamp(0.2rem, 0.45vh, 0.5rem);
             }
 
             .header {
-                gap: 1.5rem;
-                padding: 0.95rem 1.65rem;
+                gap: 1.75rem;
+                padding: 1.05rem 1.9rem;
             }
 
             .logo {
-                width: 98px;
-                height: 98px;
+                width: 108px;
+                height: 108px;
             }
 
             .school-name {
-                font-size: clamp(2.35rem, 4.55vh, 3.95rem);
+                font-size: clamp(2.7rem, 5.1vh, 4.4rem);
                 letter-spacing: 0.12em;
             }
 
             .clock-panel {
-                padding: 1rem 1.45rem;
-                gap: 0.85rem 1.5rem;
-                font-size: 1.05rem;
+                padding: 1.1rem 1.7rem;
+                gap: 0.95rem 1.75rem;
+                font-size: 1.12rem;
             }
 
             .clock-segment {
-                min-width: 170px;
+                min-width: 185px;
             }
 
             .clock-segment.primary {
-                min-width: 220px;
+                min-width: 245px;
             }
 
             .clock-divider {
@@ -1010,102 +1017,102 @@
             }
 
             .clock-time {
-                font-size: clamp(2.15rem, 3.85vh, 2.95rem);
+                font-size: clamp(2.4rem, 4.35vh, 3.3rem);
             }
 
             .clock-date {
-                font-size: clamp(0.95rem, 1.5vh, 1.15rem);
+                font-size: clamp(1rem, 1.65vh, 1.25rem);
             }
 
             .main-content {
-                padding: var(--section-gap) 1.35rem 1rem;
+                padding: var(--section-gap) 1.2rem 1rem;
             }
 
             .countdown-grid {
-                gap: 1.3rem;
+                gap: 1.6rem;
             }
 
             .countdown-card {
-                padding: 1.75rem 1.2rem;
+                padding: 2.2rem 1.4rem;
                 border-radius: 1.5rem;
             }
 
             .card-title {
-                font-size: clamp(1.28rem, 2.25vh, 1.88rem);
-                margin-bottom: 0.82rem;
+                font-size: clamp(1.45rem, 2.7vh, 2.2rem);
+                margin-bottom: 1rem;
                 min-height: 0;
                 line-height: 1.2;
             }
 
             .countdown-display {
-                gap: 0.8rem;
-                margin-bottom: 0.85rem;
+                gap: 0.95rem;
+                margin-bottom: 1rem;
             }
 
             .countdown-unit {
-                padding: 0.95rem 0.4rem;
+                padding: 1.15rem 0.45rem;
                 border-radius: 1rem;
             }
 
             .countdown-number {
-                font-size: clamp(2.15rem, 2.95vh, 2.95rem);
+                font-size: clamp(2.5rem, 3.6vh, 3.5rem);
             }
 
             .countdown-number[id^="days-"] {
-                font-size: clamp(3rem, 4.2vh, 4.35rem);
+                font-size: clamp(3.4rem, 5vh, 5rem);
             }
 
             .countdown-label {
-                font-size: clamp(0.84rem, 1.15vh, 1rem);
-                margin-top: 0.28rem;
+                font-size: clamp(0.95rem, 1.35vh, 1.15rem);
+                margin-top: 0.32rem;
             }
 
             .event-status {
-                font-size: clamp(1.45rem, 2.35vh, 2rem);
-                margin-top: 0.45rem;
+                font-size: clamp(1.65rem, 2.7vh, 2.4rem);
+                margin-top: 0.55rem;
             }
 
             .target-date {
-                font-size: clamp(0.75rem, 1vh, 0.9rem);
-                margin-top: 0.45rem;
+                font-size: clamp(0.82rem, 1.15vh, 1rem);
+                margin-top: 0.55rem;
             }
 
             .footer {
-                padding: 0.75rem 1rem;
+                padding: 0.85rem 1rem;
             }
 
             .footer-text {
-                font-size: clamp(1.05rem, 1.85vh, 1.45rem);
+                font-size: clamp(1.15rem, 2.05vh, 1.6rem);
             }
         }
 
-        @media (max-height: 900px) and (min-width: 900px) {
+        @media (max-height: 760px) and (min-width: 900px) {
             :root {
-                --section-gap: clamp(0.34rem, 0.7vh, 0.6rem);
+                --section-gap: clamp(0.42rem, 0.78vh, 0.7rem);
                 --screen-safe-y: clamp(0.1rem, 0.25vh, 0.3rem);
             }
 
             .header {
-                gap: 1rem;
-                padding: 0.62rem 1.1rem;
+                gap: 1.15rem;
+                padding: 0.7rem 1.25rem;
                 border-radius: 1rem;
             }
 
             .logo {
-                width: 70px;
-                height: 70px;
+                width: 78px;
+                height: 78px;
             }
 
             .school-name {
-                font-size: clamp(1.72rem, 3.45vh, 2.75rem);
+                font-size: clamp(1.9rem, 3.9vh, 3.1rem);
                 letter-spacing: 0.08em;
             }
 
             .clock-panel {
-                padding: 0.62rem 1rem;
-                gap: 0.5rem 1rem;
+                padding: 0.72rem 1.1rem;
+                gap: 0.55rem 1.1rem;
                 border-radius: 1rem;
-                font-size: 0.94rem;
+                font-size: 1rem;
             }
 
             .clock-segment,
@@ -1119,15 +1126,15 @@
             }
 
             .clock-time {
-                font-size: clamp(1.5rem, 2.95vh, 2.15rem);
+                font-size: clamp(1.65rem, 3.3vh, 2.35rem);
             }
 
             .clock-label {
-                font-size: 0.78rem;
+                font-size: 0.82rem;
             }
 
             .clock-date {
-                font-size: clamp(0.76rem, 1.08vh, 0.95rem);
+                font-size: clamp(0.82rem, 1.15vh, 1rem);
             }
 
             .main-content {
@@ -1135,49 +1142,49 @@
             }
 
             .countdown-grid {
-                gap: 0.82rem;
+                gap: 0.95rem;
             }
 
             .countdown-card {
-                padding: 1.08rem 0.8rem;
+                padding: 1.25rem 0.9rem;
                 border-radius: 1rem;
             }
 
             .card-title {
-                font-size: clamp(1.02rem, 1.8vh, 1.45rem);
-                margin-bottom: 0.55rem;
+                font-size: clamp(1.12rem, 2vh, 1.6rem);
+                margin-bottom: 0.65rem;
             }
 
             .countdown-display {
-                gap: 0.5rem;
-                margin-bottom: 0.55rem;
+                gap: 0.58rem;
+                margin-bottom: 0.65rem;
             }
 
             .countdown-unit {
-                padding: 0.6rem 0.22rem;
+                padding: 0.72rem 0.25rem;
                 border-radius: 0.75rem;
             }
 
             .countdown-number {
-                font-size: clamp(1.45rem, 2.1vh, 2.05rem);
+                font-size: clamp(1.6rem, 2.35vh, 2.25rem);
             }
 
             .countdown-number[id^="days-"] {
-                font-size: clamp(2rem, 3.05vh, 3.05rem);
+                font-size: clamp(2.2rem, 3.5vh, 3.5rem);
             }
 
             .countdown-label {
-                font-size: clamp(0.64rem, 0.82vh, 0.84rem);
+                font-size: clamp(0.7rem, 0.9vh, 0.9rem);
                 margin-top: 0.18rem;
             }
 
             .event-status {
-                font-size: clamp(1.08rem, 1.7vh, 1.42rem);
+                font-size: clamp(1.18rem, 1.9vh, 1.55rem);
                 margin-top: 0.28rem;
             }
 
             .target-date {
-                font-size: 0.68rem;
+                font-size: 0.74rem;
                 margin-top: 0.22rem;
             }
 
@@ -1186,7 +1193,7 @@
             }
 
             .footer-text {
-                font-size: clamp(0.85rem, 1.3vh, 1.05rem);
+                font-size: clamp(0.92rem, 1.45vh, 1.15rem);
             }
         }
 
@@ -1839,51 +1846,72 @@
         // ========================================================================
         // CLOCK & HIJRI DATE UPDATE
         // ========================================================================
-        let cachedHijriFormatter = null;
+        const HIJRI_MONTHS = [
+            'Muharram',
+            'Safar',
+            'Rabi al-Awwal',
+            'Rabi al-Thani',
+            'Jumada al-Awwal',
+            'Jumada al-Thani',
+            'Rajab',
+            "Sha'ban",
+            'Ramadan',
+            'Shawwal',
+            "Dhu al-Qi'dah",
+            'Dhu al-Hijjah'
+        ];
 
-        function createHijriFormatter() {
-            const calendarCandidates = ['islamic-umalqura', 'islamic', 'islamic-civil', 'islamic-tbla'];
+        // Local adjustment to match regional moon-sighting calendars.
+        // -1 matches the expected "08 Ramadan 1447 AH" for 2026-02-25 in your display.
+        const HIJRI_DAY_OFFSET = -1;
+        const ISLAMIC_EPOCH = 1948439.5;
 
-            for (const calendar of calendarCandidates) {
-                try {
-                    const formatter = new Intl.DateTimeFormat(`en-US-u-ca-${calendar}`, {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric'
-                    });
+        function gregorianToJdn(year, month, day) {
+            const a = Math.floor((14 - month) / 12);
+            const y = year + 4800 - a;
+            const m = month + (12 * a) - 3;
 
-                    const resolvedCalendar = (formatter.resolvedOptions().calendar || '').toLowerCase();
-                    if (resolvedCalendar.includes('islamic')) {
-                        return formatter;
-                    }
-                } catch (e) {
-                    // Try the next Islamic calendar variant
-                }
-            }
+            return day
+                + Math.floor((153 * m + 2) / 5)
+                + (365 * y)
+                + Math.floor(y / 4)
+                - Math.floor(y / 100)
+                + Math.floor(y / 400)
+                - 32045;
+        }
 
-            return null;
+        function islamicToJulianDay(year, month, day) {
+            return day
+                + Math.ceil(29.5 * (month - 1))
+                + ((year - 1) * 354)
+                + Math.floor((3 + (11 * year)) / 30)
+                + ISLAMIC_EPOCH
+                - 1;
+        }
+
+        function julianDayToHijri(julianDay) {
+            const jd = Math.floor(julianDay) + 0.5;
+            const year = Math.floor(((30 * (jd - ISLAMIC_EPOCH)) + 10646) / 10631);
+            const month = Math.min(
+                12,
+                Math.ceil((jd - (29 + islamicToJulianDay(year, 1, 1))) / 29.5) + 1
+            );
+            const day = Math.floor(jd - islamicToJulianDay(year, month, 1) + 1);
+
+            return { year, month, day };
         }
 
         function getHijriDateString(date) {
             try {
-                if (!cachedHijriFormatter) {
-                    cachedHijriFormatter = createHijriFormatter();
-                }
+                const year = date.getFullYear();
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
+                const gregorianJdn = gregorianToJdn(year, month, day);
+                const hijri = julianDayToHijri(gregorianJdn + HIJRI_DAY_OFFSET);
 
-                if (!cachedHijriFormatter) {
-                    return 'Hijri N/A';
-                }
-
-                const parts = cachedHijriFormatter.formatToParts(date);
-                const day = parts.find(part => part.type === 'day')?.value;
-                const month = parts.find(part => part.type === 'month')?.value;
-                const year = parts.find(part => part.type === 'year')?.value;
-
-                if (!day || !month || !year) {
-                    return cachedHijriFormatter.format(date);
-                }
-
-                return `${day} ${month} ${year} AH`;
+                const monthName = HIJRI_MONTHS[hijri.month - 1] || 'Unknown';
+                const dayText = String(hijri.day).padStart(2, '0');
+                return `${dayText} ${monthName} ${hijri.year} AH`;
             } catch (e) {
                 return 'Hijri N/A';
             }
