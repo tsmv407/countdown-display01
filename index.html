@@ -307,9 +307,151 @@
         /* ============================================================================
            RESPONSIVE DESIGN
            ============================================================================ */
+        
+        /* Large TV/Display Support (2560px+) - 65" TV at 16:9 */
+        @media (min-width: 2560px) {
+            html {
+                font-size: 10px; /* Reduce base font size to scale everything down */
+            }
+            
+            .clock-panel {
+                min-width: 280px;
+                font-size: 1rem;
+                top: 1rem;
+                right: 1rem;
+                padding: 1.2rem;
+            }
+            
+            .clock-time {
+                font-size: 2rem;
+                margin-bottom: 0.3rem;
+            }
+            
+            .school-name {
+                font-size: 3.5rem;
+            }
+            
+            .header {
+                gap: 1.5rem;
+                padding: 1rem;
+                margin: 0.8rem auto;
+            }
+            
+            .logo {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .main-content {
+                padding: 1.5rem;
+            }
+            
+            .countdown-grid {
+                gap: 2rem;
+                max-width: 1800px;
+            }
+            
+            .countdown-card {
+                padding: 2rem 1.5rem;
+                border-radius: 1.5rem;
+                gap: 1.5rem;
+            }
+            
+            .card-title {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .countdown-display {
+                gap: 0.8rem;
+                margin-bottom: 1rem;
+            }
+            
+            .countdown-unit {
+                padding: 1.2rem 0.4rem;
+                border-radius: 1rem;
+            }
+            
+            .countdown-number {
+                font-size: 2.2rem;
+            }
+            
+            .countdown-number[id^="days-"] {
+                font-size: 3.2rem;
+            }
+            
+            .countdown-label {
+                font-size: 0.8rem;
+                margin-top: 0.3rem;
+            }
+            
+            .event-status {
+                font-size: 1.8rem;
+                margin-top: 0.8rem;
+            }
+            
+            .target-date {
+                font-size: 0.75rem;
+                margin-top: 0.8rem;
+            }
+            
+            .footer-text {
+                font-size: 1.5rem;
+            }
+            
+            .event-manager-toggle {
+                width: 48px;
+                height: 48px;
+                bottom: 1rem;
+                left: 1rem;
+                font-size: 1.2rem;
+            }
+            
+            .fullscreen-toggle {
+                width: 48px;
+                height: 48px;
+                bottom: 1rem;
+                right: 1rem;
+                font-size: 1.2rem;
+            }
+        }
+        
+        /* Ultra-large displays (3840px+) - 85" TV */
+        @media (min-width: 3840px) {
+            html {
+                font-size: 13px;
+            }
+        }
+
         @media (max-width: 1920px) {
             .school-name {
                 font-size: 3.5rem;
+            }
+        }
+
+        @media (min-width: 1920px) and (max-width: 2560px) {
+            html {
+                font-size: 14px;
+            }
+            
+            .school-name {
+                font-size: 3.5rem;
+            }
+            
+            .card-title {
+                font-size: 1.8rem;
+            }
+            
+            .countdown-number {
+                font-size: 2.8rem;
+            }
+            
+            .countdown-number[id^="days-"] {
+                font-size: 4rem;
+            }
+            
+            .countdown-label {
+                font-size: 0.95rem;
             }
         }
 
