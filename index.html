@@ -1509,18 +1509,11 @@
                 title: "School 90th Anniversary",
                 targetDate: new Date("2026-08-17 00:00:00"),
                 eventIcon: "🎉"
-            },
-            {
-                title: "SSC & CIE Oct/Nov 2026",
-                targetDate: new Date("2026-09-27 09:30:00"),
-                eventIcon: "📚"
-            },
-            {
-                title: "HSC & Edexcel AS, A2 Oct/Nov 2026",
-                targetDate: new Date("2026-09-27 09:30:00"),
-                eventIcon: "🎓"
             }
         ];
+
+        // Bump when default events change so stored data resets to TARGETS
+        const EVENTS_STORAGE_VERSION = '2';
 
         // Day/Night mode times (24-hour format)
         const DAY_START = 6;   // 06:00 - Light mode
@@ -1800,14 +1793,39 @@
         }
 
         function loadEventsFromStorage() {
+            const storedVersion = localStorage.getItem('thulhaadhoo_events_version');
+            if (storedVersion !== EVENTS_STORAGE_VERSION) {
+                localStorage.setItem('thulhaadhoo_events_version', EVENTS_STORAGE_VERSION);
+                countdownConfigs = TARGETS.map(t => ({
+                    ...t,
+                    targetDate: new Date(t.targetDate)
+                }));
+                saveEventsToStorage();
+                return;
+            }
+
             const stored = localStorage.getItem('thulhaadhoo_events');
             if (stored) {
                 try {
-                    countdownConfigs = JSON.parse(stored);
+                    countdownConfigs = JSON.parse(stored).map(event => ({
+                        ...event,
+                        targetDate: new Date(event.targetDate)
+                    }));
                 } catch (e) {
                     console.log('Could not load stored events');
                 }
             }
+        }
+
+        // Reload the page once at midnight each day (keeps display fresh)
+        function scheduleDailyRefresh() {
+            const now = new Date();
+            const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+            const msUntilMidnight = midnight - now;
+
+            setTimeout(() => {
+                location.reload();
+            }, msUntilMidnight);
         }
 
         function updateEventList() {
@@ -2031,6 +2049,7 @@
             updateClock();
             applyDayNight();
             requestWakeLock();
+            scheduleDailyRefresh();
             
             // ====== ATTACH EVENT LISTENERS (after DOM is ready) ======
             console.log('Attaching event listeners...');
