@@ -179,6 +179,10 @@
             overflow: hidden;
         }
 
+        .main-content:has(.grid-1) {
+            align-items: center;
+        }
+
         .countdown-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -191,22 +195,17 @@
             align-content: stretch;
         }
 
+        /* Single-card layout: natural card height, centered in the main area */
         .countdown-grid.grid-1 {
             grid-template-columns: 1fr;
             max-width: 1000px;
             width: 90%;
-            height: 100%;
+            height: auto;
+            min-height: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        /* Stable single-card layout: keep normal card size and center it */
-        .countdown-grid.grid-single-stable {
-            grid-template-columns: minmax(0, 600px);
-            max-width: 1200px;
-            width: 100%;
-            justify-content: center;
+            align-content: center;
         }
 
         .countdown-grid.grid-1 .countdown-card {
@@ -463,8 +462,7 @@
                 gap: 1.5rem;
             }
 
-            .countdown-grid.grid-single-stable {
-                grid-template-columns: 1fr;
+            .countdown-grid.grid-1 {
                 max-width: 100%;
             }
             
@@ -500,8 +498,7 @@
                 gap: 2rem;
             }
 
-            .countdown-grid.grid-single-stable {
-                grid-template-columns: 1fr;
+            .countdown-grid.grid-1 {
                 max-width: 100%;
             }
             
@@ -643,8 +640,7 @@
                 gap: 2.5rem;
             }
 
-            .countdown-grid.grid-single-stable {
-                grid-template-columns: minmax(0, 700px);
+            .countdown-grid.grid-1 {
                 max-width: 1500px;
             }
             
@@ -732,8 +728,7 @@
                 max-width: 2300px;
             }
 
-            .countdown-grid.grid-single-stable {
-                grid-template-columns: minmax(0, 760px);
+            .countdown-grid.grid-1 {
                 max-width: 1600px;
             }
             
@@ -903,8 +898,7 @@
                 padding: 2.7rem 2.1rem;
             }
 
-            .countdown-grid.grid-single-stable {
-                grid-template-columns: minmax(0, 860px);
+            .countdown-grid.grid-1 {
                 max-width: 1800px;
             }
             
@@ -1810,7 +1804,7 @@
             
             // Apply appropriate grid class based on valid event count
             if (validCount === 1) {
-                grid.classList.add('grid-single-stable');
+                grid.classList.add('grid-1');
             } else if (validCount === 2) {
                 grid.classList.add('grid-2');
             } else if (validCount === 3) {
